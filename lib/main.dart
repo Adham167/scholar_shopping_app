@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scholar_shopping_app/screens/home_screen.dart';
 import 'package:scholar_shopping_app/screens/login_screen.dart';
+import 'package:scholar_shopping_app/screens/ordered_screen.dart';
 import 'package:scholar_shopping_app/screens/product_details_screen.dart';
 import 'package:scholar_shopping_app/screens/register_screen.dart';
+import 'package:scholar_shopping_app/screens/shopping_cart.dart';
 import 'package:scholar_shopping_app/screens/splach_screen.dart';
 
 void main() async {
@@ -23,6 +25,8 @@ final initialRoute;
         "/homescreen": (context) => HomeScreen(),
         "/loginscreen": (context) => LoginScreen(),
         "/registerscreen": (context) => RegisterScreen(),
+        "/shoppingcart": (context) => ShoppingCart(),
+        "/orderscreen": (context) => OrderedScreen(),
       },
       initialRoute: "/",
     );

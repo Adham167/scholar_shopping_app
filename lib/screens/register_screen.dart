@@ -38,6 +38,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _confirmPasswordController.text.trim(),
       );
       await prefs.setString("gender", _gender!);
+      if (_imageFile != null) {
+        await prefs.setString("profileImagePath", _imageFile!.path);
+      }
 
       if (_passwordController.text.trim() !=
           _confirmPasswordController.text.trim()) {

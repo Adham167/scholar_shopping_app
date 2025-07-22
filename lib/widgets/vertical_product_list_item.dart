@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_shopping_app/models/cart_model.dart';
 import 'package:scholar_shopping_app/models/product_model.dart';
+import 'package:scholar_shopping_app/services/list_carts.dart';
 
 class VerticalProductListItem extends StatelessWidget {
   const VerticalProductListItem({super.key, required this.productModel});
@@ -56,10 +58,22 @@ class VerticalProductListItem extends StatelessWidget {
             child: Row(
               children: [
                 const Spacer(),
-                const Icon(
-                  Icons.add_shopping_cart_outlined,
-                  size: 20,
-                  color: Colors.blueAccent,
+                IconButton(
+                  onPressed: () {
+                    final item = CartModel(
+                      1,
+                      price: productModel.price,
+                      name: productModel.name,
+                      image: productModel.imageurl,
+                    );
+                    
+                    listCarts.add(item);
+                  },
+                  icon: Icon(
+                    Icons.add_shopping_cart_outlined,
+                    size: 20,
+                    color: Colors.blueAccent,
+                  ),
                 ),
               ],
             ),
