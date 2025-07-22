@@ -51,8 +51,14 @@ class ProductDetailsScreen extends StatelessWidget {
                       name: productModel.name,
                       image: productModel.imageurl,
                     );
-
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text("Product Added to cart"),
+                      ),
+                    );
                     listCarts.add(item);
+                    updateCartItemCount();
                   },
                   child: Container(
                     height: 60,

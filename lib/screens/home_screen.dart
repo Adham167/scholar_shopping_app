@@ -103,40 +103,49 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: Icon(Icons.home, color: Colors.blueAccent),
               title: Text("Home"),
             ),
-            ListTile(
-              onTap: () => Navigator.pushNamed(context, "/shoppingcart"),
-              leading: Stack(
-                children: [
-                  Icon(Icons.shopping_cart_sharp, color: Colors.blueAccent),
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
+            ValueListenableBuilder(
+              valueListenable: cartItemCountNotifier,
+
+              builder: (context, value, child) {
+                return ListTile(
+                  onTap: () => Navigator.pushNamed(context, "/shoppingcart"),
+                  leading: Stack(
+                    children: [
+                      Icon(Icons.shopping_cart_sharp, color: Colors.blueAccent),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          child: Text(
+                            "${getTotalCount()}",
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
-                      constraints: BoxConstraints(minWidth: 16, minHeight: 16),
-                      child: Text(
-                        "${getTotalCount()}",
-                        style: TextStyle(color: Colors.white, fontSize: 10),
-                        textAlign: TextAlign.center,
+                    ],
+                  ),
+                  title: Row(
+                    children: [
+                      Text("Cart"),
+                      Spacer(),
+                      Text(
+                        ("\$${getTotalPrice()}"),
+                        style: TextStyle(color: Colors.green, fontSize: 14),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              title: Row(
-                children: [
-                  Text("Cart"),
-                  Spacer(),
-                  Text(
-                    ("\$${getTotalPrice()}"),
-                    style: TextStyle(color: Colors.green, fontSize: 14),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
             ListTile(
               onTap: () => Navigator.pushNamed(context, "/orderscreen"),

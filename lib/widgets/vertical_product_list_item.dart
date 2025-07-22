@@ -68,6 +68,7 @@ class VerticalProductListItem extends StatelessWidget {
                     );
                     
                     listCarts.add(item);
+                    updateCartItemCount();
                   },
                   icon: Icon(
                     Icons.add_shopping_cart_outlined,

@@ -73,7 +73,13 @@ class _ShoppingCartState extends State<ShoppingCart> {
                             children: [
                               Text("Total Item: "),
                               Spacer(),
-                              Text(getTotalCount().toString()),
+                              Text(
+                                getTotalCount().toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(height: 10),
@@ -90,20 +96,30 @@ class _ShoppingCartState extends State<ShoppingCart> {
                               Text(
                                 '\$${getTotalPrice().toString()}',
                                 style: TextStyle(
+                                  fontSize: 18,
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
+                          SizedBox(height: 16),
                           Container(
                             height: 60,
                             width: double.infinity,
-                            color: Colors.blueAccent,
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+
                             child: Center(
                               child: Text(
                                 "Place Order",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),
