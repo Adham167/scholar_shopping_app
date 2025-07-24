@@ -66,9 +66,15 @@ class VerticalProductListItem extends StatelessWidget {
                       name: productModel.name,
                       image: productModel.imageurl,
                     );
-                    
+
                     listCarts.add(item);
                     updateCartItemCount();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text("Added to cart"),
+                      ),
+                    );
                   },
                   icon: Icon(
                     Icons.add_shopping_cart_outlined,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:scholar_shopping_app/models/cart_model.dart';
 

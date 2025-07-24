@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:scholar_shopping_app/widgets/custom_text_form_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:scholar_shopping_app/widgets/show_message.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   File? _imageFile;
 
   final _formkey = GlobalKey<FormState>();
-  final _fulltNameController = TextEditingController();
+  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _addressController = TextEditingController();
@@ -24,38 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
 
   String? _gender;
-
-  Future<void> _registerUser() async {
-    if (_formkey.currentState!.validate() && _gender != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("fulltname", _fulltNameController.text.trim());
-      await prefs.setString("phonenumber", _phoneNumberController.text.trim());
-      await prefs.setString("address", _addressController.text.trim());
-      await prefs.setString("email", _emailController.text.trim());
-      await prefs.setString("password", _passwordController.text.trim());
-      await prefs.setString(
-        "confirm password",
-        _confirmPasswordController.text.trim(),
-      );
-      await prefs.setString("gender", _gender!);
-      if (_imageFile != null) {
-        await prefs.setString("profileImagePath", _imageFile!.path);
-      }
-
-      if (_passwordController.text.trim() !=
-          _confirmPasswordController.text.trim()) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Confirm Password not equal Password")),
-        );
-      } else {
-        Navigator.pushReplacementNamed(context, "/loginscreen");
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Pless fill all fields before submit")),
-      );
-    }
-  }
+  bool isLoading = false;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -67,6 +39,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
+    }
+  }
+
+  void registerUser() async {
+    if (!_formkey.currentState!.validate()) return;
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
+
+      String uid = userCredential.user!.uid;
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        "mail": _emailController.text.trim(),
+        "name": _fullNameController.text.trim(),
+        "phone": _phoneNumberController.text.trim(),
+        "address": _addressController.text.trim(),
+        "password": _passwordController.text.trim(),
+        "confirmpassword": _confirmPasswordController.text.trim(),
+        "gendre": _gender,
+        "isAdmin": false,
+      });
+      ShowMessage(context, "Success !");
+      Navigator.pushReplacementNamed(context, "/loginscreen");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        ShowMessage(context, "'The password provided is too weak.'");
+      } else if (e.code == 'email-already-in-use') {
+        ShowMessage(context, "email already in use");
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -130,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                          controller: _fulltNameController,
+                          controller: _fullNameController,
                           label: "Full Name",
                           iconData: Icons.person,
                         ),
@@ -190,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(height: 16),
                         GestureDetector(
-                          onTap: () => _registerUser(),
+                          onTap: () => registerUser(),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),

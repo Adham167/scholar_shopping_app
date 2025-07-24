@@ -104,21 +104,67 @@ class _ShoppingCartState extends State<ShoppingCart> {
                             ],
                           ),
                           SizedBox(height: 16),
-                          Container(
-                            height: 60,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.blueAccent,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder:
+                                    (context) => AlertDialog(
+                                      title: Text(
+                                        'Order Confirmation',
+                                        style: TextStyle(fontSize: 24),
+                                      ),
+                                      content: Text(
+                                        'Are you sure you want to place this order?',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('cancel'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
 
-                            child: Center(
-                              child: Text(
-                                "Place Order",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Ordered Succeded',
+                                                ),
+                                              ),
+                                            );
+
+                                            listCarts.clear();
+                                            setState(() {
+                                              updateCartItemCount();
+                                            });
+                                          },
+                                          child: Text('Confirm Order'),
+                                        ),
+                                      ],
+                                    ),
+                              );
+                            },
+                            child: Container(
+                              height: 60,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.blueAccent,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+
+                              child: Center(
+                                child: Text(
+                                  "Place Order",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),

@@ -12,19 +12,18 @@ class _SplachScreenState extends State<SplachScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), ()async {
-      final nextRoute = await _getNextrout();
-      Navigator.pushReplacementNamed(context, nextRoute);
+    Future.delayed(Duration(seconds: 3), () async {
+      Navigator.pushReplacementNamed(context, "/loginscreen");
     });
   }
 
-  Future<String> _getNextrout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool loggedIn = prefs.getBool("login") ?? false;
-    
-    final initialRoute = loggedIn ? "/homescreen" : "/loginscreen";
-    return initialRoute;
-  }
+  // Future<String> _getNextrout() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final bool loggedIn = prefs.getBool("login") ?? false;
+
+  //   final initialRoute = loggedIn ? "/homescreen" : "/loginscreen";
+  //   return initialRoute;
+  // }
 
   @override
   Widget build(BuildContext context) {

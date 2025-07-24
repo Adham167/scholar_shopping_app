@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar_shopping_app/widgets/custom_text_form_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:scholar_shopping_app/widgets/show_message.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,15 +16,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordcontroller = TextEditingController();
 
   Future<void> _loginUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final email = prefs.getString("email");
-    final password = prefs.getString("password");
-
-    if (email == _emailcontroller.text.trim() &&
-        password == _passwordcontroller.text.trim()) {
-      await prefs.setBool("login", true);
+    if (_formkey.currentState!.validate()) return;
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: _emailcontroller.text.trim(),
+            password: _passwordcontroller.text.trim(),
+          );
+      ShowMessage(context, "Success");
       Navigator.pushReplacementNamed(context, "/homescreen");
-    } else {}
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 
   @override

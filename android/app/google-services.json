@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "637820488826",
+    "project_id": "scholar-shopping-app",
+    "storage_bucket": "scholar-shopping-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637820488826:android:3bcaebe890cfc56f16ffc3",
+        "android_client_info": {
+          "package_name": "com.example.scholar_shopping_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmCFhRqt-VRXOXAqUwT5OuhpITCcL-exI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
