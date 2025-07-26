@@ -41,7 +41,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-                Text("${productModel.description}"),
+                Text(productModel.description),
                 SizedBox(height: 16),
                 GestureDetector(
                   onTap: () {

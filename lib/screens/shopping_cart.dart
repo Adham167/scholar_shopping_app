@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scholar_shopping_app/models/cart_model.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 import 'package:scholar_shopping_app/widgets/card_in_cart.dart';
 import 'package:scholar_shopping_app/widgets/empty_widget.dart';

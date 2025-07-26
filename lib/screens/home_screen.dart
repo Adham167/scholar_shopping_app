@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:scholar_shopping_app/models/user_model.dart';
 import 'package:scholar_shopping_app/screens/product_details_screen.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 import 'package:scholar_shopping_app/services/products.dart';
+import 'package:scholar_shopping_app/widgets/custom_drawer.dart';
 import 'package:scholar_shopping_app/widgets/horizental_product_list_item.dart';
 import 'package:scholar_shopping_app/widgets/vertical_product_list_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,160 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: FutureBuilder<DocumentSnapshot>(
-        future: getUserData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            return Center(child: Text('Error fetching user data'));
-          }
-
-          if (!snapshot.hasData || !snapshot.data!.exists) {
-            return Center(child: Text('User data not found'));
-          }
-
-          final userData = snapshot.data!.data() as Map<String, dynamic>;
-
-          return Drawer(
-            child: Column(
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.blueAccent),
-
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                imagePath != null
-                                    ? FileImage(File(imagePath!))
-                                    : null,
-                            child:
-                                imagePath == null
-                                    ? Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: Colors.white,
-                                    )
-                                    : null,
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            userData['name'] ?? "Guest User",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            userData['mail'] ?? "",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  onTap: () => Navigator.pop(context),
-                  leading: Icon(Icons.home, color: Colors.blueAccent),
-                  title: Text("Home"),
-                ),
-                ValueListenableBuilder(
-                  valueListenable: cartItemCountNotifier,
-
-                  builder: (context, value, child) {
-                    return ListTile(
-                      onTap:
-                          () => Navigator.pushNamed(context, "/shoppingcart"),
-                      leading: Stack(
-                        children: [
-                          Icon(
-                            Icons.shopping_cart_sharp,
-                            color: Colors.blueAccent,
-                          ),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              constraints: BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
-                              ),
-                              child: Text(
-                                "${getTotalCount()}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      title: Row(
-                        children: [
-                          Text("Cart"),
-                          Spacer(),
-                          Text(
-                            ("\$${getTotalPrice()}"),
-                            style: TextStyle(color: Colors.green, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  onTap: () => Navigator.pushNamed(context, "/orderscreen"),
-                  leading: Icon(
-                    Icons.featured_play_list,
-                    color: Colors.blueAccent,
-                  ),
-                  title: Text("Orders"),
-                ),
-                Divider(),
-                ListTile(
-                  onTap: () => Navigator.pop(context),
-                  leading: Icon(Icons.settings, color: Colors.blueAccent),
-                  title: Text("Settings"),
-                ),
-                ListTile(
-                  onTap: () => Navigator.pop(context),
-                  leading: Icon(Icons.help_outline, color: Colors.blueAccent),
-                  title: Text("Help & Support"),
-                ),
-                Spacer(),
-                Divider(),
-                ListTile(
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, "/");
-                  },
-                  leading: Icon(Icons.logout, color: Colors.red),
-                  title: Text("Logout", style: TextStyle(color: Colors.red)),
-                ),
-                SizedBox(height: 16),
-              ],
-            ),
-          );
-        },
-      ),
+      drawer: CustomDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         leading: Builder(

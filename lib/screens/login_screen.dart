@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_shopping_app/cubits/login_cubit/login_cubit.dart';
-import 'package:scholar_shopping_app/models/user_model.dart';
 import 'package:scholar_shopping_app/widgets/custom_button.dart';
 import 'package:scholar_shopping_app/widgets/custom_divider.dart';
 import 'package:scholar_shopping_app/widgets/custom_text_form_field.dart';
@@ -15,9 +14,8 @@ class LoginScreen extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  final _emailcontroller = TextEditingController();
-
-  final _passwordcontroller = TextEditingController();
+  String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +24,7 @@ class LoginScreen extends StatelessWidget {
         if (state is LoginLoading) {
           isLoading = true;
         } else if (state is LoginSuccess) {
-          Navigator.pushReplacementNamed(
-            context,
-            "/homescreen",
-          );
+          Navigator.pushReplacementNamed(context, "/homescreen");
           isLoading = false;
         } else if (state is LoginFailure) {
           ShowMessage(context, state.errMessage);
@@ -38,7 +33,7 @@ class LoginScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return ModalProgressHUD(
-          inAsyncCall: isLoading,
+          inAsyncCall: state is LoginLoading,
           child: Scaffold(
             backgroundColor: Colors.white,
             body: ListView(
@@ -56,14 +51,14 @@ class LoginScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               CustomTextFormField(
-                                controller: _emailcontroller,
+                                onChange: (data) => email = data,
                                 label: "Email",
                                 iconData: Icons.email,
                                 textInputType: TextInputType.text,
                               ),
                               SizedBox(height: 8),
                               CustomTextFormField(
-                                controller: _passwordcontroller,
+                                onChange: (data)=>password = data,
                                 label: "Password",
                                 iconData: Icons.lock,
                                 obsecureText: true,
@@ -77,9 +72,9 @@ class LoginScreen extends StatelessWidget {
                                       BlocProvider.of<LoginCubit>(
                                         context,
                                       ).loginUser(
-                                        email: _emailcontroller.text.trim(),
+                                        email: email!,
                                         password:
-                                            _passwordcontroller.text.trim(),
+                                            password!
                                       );
                                     }
                                   },
@@ -121,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: CustomButton(
-                                  rout: "/homescreen",
+                                  rout: "/registerscreen",
                                   name: "Create an Account",
                                 ),
                               ),

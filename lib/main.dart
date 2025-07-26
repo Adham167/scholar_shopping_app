@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/login_cubit/login_cubit.dart';
+import 'package:scholar_shopping_app/cubits/register_cubit/regiser_cubit.dart';
 import 'package:scholar_shopping_app/firebase_options.dart';
+import 'package:scholar_shopping_app/screens/dashboard_screens.dart';
 import 'package:scholar_shopping_app/screens/home_screen.dart';
 import 'package:scholar_shopping_app/screens/login_screen.dart';
 import 'package:scholar_shopping_app/screens/ordered_screen.dart';
@@ -21,8 +23,12 @@ class ScholarShoppingApp extends StatelessWidget {
   final initialRoute;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginCubit(),
+    return MultiBlocProvider(
+      providers: [
+            BlocProvider(create: (context) => LoginCubit()),
+            BlocProvider(create: (context) => RegiserCubit()),
+
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
@@ -32,6 +38,7 @@ class ScholarShoppingApp extends StatelessWidget {
           "/registerscreen": (context) => RegisterScreen(),
           "/shoppingcart": (context) => ShoppingCart(),
           "/orderscreen": (context) => OrderedScreen(),
+          "/dashboard": (context) => DashboardScreens(),
         },
         initialRoute: "/",
       ),
