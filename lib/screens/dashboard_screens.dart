@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_shopping_app/widgets/category_list_view.dart';
 
 class DashboardScreens extends StatelessWidget {
   const DashboardScreens({super.key});
@@ -24,7 +25,12 @@ class DashboardScreens extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Center(child: Text("Home Page")),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CategoryListView(),
+              ),
+            ),
             Center(child: Text("Profile Page")),
           ],
         ),

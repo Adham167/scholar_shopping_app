@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -166,7 +168,10 @@ class CustomDrawer extends StatelessWidget {
               const Divider(),
               if (userData["isAdmin"])
                 ListTile(
-                  onTap: () => Navigator.pushNamed(context, "/dashboard"),
+                  onTap: () {
+                    BlocProvider.of<CategoryCubit>(context).getCategory();
+                    Navigator.pushNamed(context, "/dashboard");
+                  },
                   leading: const Icon(
                     Icons.dashboard,
                     color: Colors.blueAccent,

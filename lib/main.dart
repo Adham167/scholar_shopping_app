@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/cubits/login_cubit/login_cubit.dart';
 import 'package:scholar_shopping_app/cubits/register_cubit/regiser_cubit.dart';
 import 'package:scholar_shopping_app/firebase_options.dart';
@@ -27,6 +28,7 @@ class ScholarShoppingApp extends StatelessWidget {
       providers: [
             BlocProvider(create: (context) => LoginCubit()),
             BlocProvider(create: (context) => RegiserCubit()),
+            BlocProvider(create: (context) => CategoryCubit()),
 
       ],
       child: MaterialApp(

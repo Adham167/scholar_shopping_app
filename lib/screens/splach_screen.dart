@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplachScreen extends StatefulWidget {
@@ -12,17 +13,14 @@ class _SplachScreenState extends State<SplachScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3), () async {
-      Navigator.pushReplacementNamed(context, "/loginscreen");
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        Navigator.pushReplacementNamed(context, "/loginscreen");
+      }else{
+        Navigator.pushReplacementNamed(context, "/homescreen");
+      }
     });
   }
-
-  // Future<String> _getNextrout() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final bool loggedIn = prefs.getBool("login") ?? false;
-
-  //   final initialRoute = loggedIn ? "/homescreen" : "/loginscreen";
-  //   return initialRoute;
-  // }
 
   @override
   Widget build(BuildContext context) {
