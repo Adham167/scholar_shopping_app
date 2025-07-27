@@ -19,7 +19,7 @@ List<ProductModel> products = [
         question: "Can the wheels be locked?",
         answer: "No, the wheels do not have a locking mechanism.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Wireless Bluetooth Headphones",
@@ -39,7 +39,7 @@ List<ProductModel> products = [
         question: "Is it compatible with iPhones?",
         answer: "Fully compatible with all iOS and Android devices.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Smart LED TV 55 inch",
@@ -58,7 +58,7 @@ List<ProductModel> products = [
         question: "Does it have screen mirroring?",
         answer: "Yes, supports screen mirroring via Miracast.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Stainless Steel Cookware Set",
@@ -77,7 +77,7 @@ List<ProductModel> products = [
         question: "Is it oven safe?",
         answer: "Safe up to 500°F (260°C).",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Modern Wood Coffee Table",
@@ -96,7 +96,7 @@ List<ProductModel> products = [
         question: "Is the wood treated against moisture?",
         answer: "Yes, it has a moisture-resistant finish.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Men’s Running Shoes",
@@ -115,7 +115,7 @@ List<ProductModel> products = [
         question: "Can I use them for gym workouts?",
         answer: "Yes, suitable for running and indoor training.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Gaming Mouse RGB",
@@ -134,7 +134,7 @@ List<ProductModel> products = [
         question: "Is DPI adjustable?",
         answer: "Yes, 6 levels of DPI customization.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Stainless Steel Water Bottle",
@@ -153,7 +153,7 @@ List<ProductModel> products = [
         question: "Is it safe for kids?",
         answer: "Yes, made from food-grade stainless steel.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Laptop Stand Adjustable",
@@ -172,7 +172,7 @@ List<ProductModel> products = [
         question: "Does it have rubber pads?",
         answer: "Yes, prevents slipping and scratching.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
   ProductModel(
     name: "Mini Indoor Plant Set",
@@ -191,6 +191,6 @@ List<ProductModel> products = [
         question: "How often do I water them?",
         answer: "Once every 7-10 days depending on humidity.",
       ),
-    ],
+    ], category: '', rate: 4.5,
   ),
 ];

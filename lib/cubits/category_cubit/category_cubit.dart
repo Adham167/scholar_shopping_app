@@ -11,7 +11,6 @@ class CategoryCubit extends Cubit<CategoryState> {
   );
   List<String> categoryList = [];
   void addCategory({required String categoryName}) async {
-    emit(CategoryLoading());
     try {
       final query =
           await categories.where("name", isEqualTo: categoryName).get();

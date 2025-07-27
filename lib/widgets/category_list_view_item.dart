@@ -14,6 +14,7 @@ class CategoryListViewItem extends StatelessWidget {
       elevation: 5,
       child: ListTile(
         leading: CircleAvatar(
+          backgroundColor: Colors.blueAccent,
           child: Text(
             categoryName[0].toUpperCase(),
             style: TextStyle(
@@ -22,7 +23,6 @@ class CategoryListViewItem extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          backgroundColor: Colors.blueAccent,
         ),
         title: Text(
           categoryName,

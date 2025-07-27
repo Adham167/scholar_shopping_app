@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
+import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -170,6 +171,7 @@ class CustomDrawer extends StatelessWidget {
                 ListTile(
                   onTap: () {
                     BlocProvider.of<CategoryCubit>(context).getCategory();
+                    BlocProvider.of<ProductCubit>(context).getProduct();
                     Navigator.pushNamed(context, "/dashboard");
                   },
                   leading: const Icon(

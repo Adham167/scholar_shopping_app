@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scholar_shopping_app/widgets/category_list_view.dart';
+import 'package:scholar_shopping_app/widgets/product_list_view.dart';
 
 class DashboardScreens extends StatelessWidget {
   const DashboardScreens({super.key});
@@ -31,7 +32,10 @@ class DashboardScreens extends StatelessWidget {
                 child: CategoryListView(),
               ),
             ),
-            Center(child: Text("Profile Page")),
+            Center(child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ProductListView(),
+            )),
           ],
         ),
       ),

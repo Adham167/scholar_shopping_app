@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:scholar_shopping_app/models/cart_model.dart';
 import 'package:scholar_shopping_app/models/product_model.dart';
-import 'package:scholar_shopping_app/services/list_carts.dart';
+import 'package:scholar_shopping_app/widgets/vertical_product_list_item.dart';
 
-class VerticalProductListItem extends StatelessWidget {
-  const VerticalProductListItem({super.key, required this.productModel});
+class ProductListItem extends StatelessWidget {
+  const ProductListItem({super.key, required this.productModel});
   final ProductModel productModel;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,30 +71,7 @@ class VerticalProductListItem extends StatelessWidget {
             child: Row(
               children: [
                 const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    final item = CartModel(
-                      1,
-                      price: productModel.price,
-                      name: productModel.name,
-                      image: productModel.imageurl,
-                    );
-
-                    listCarts.add(item);
-                    updateCartItemCount();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text("Added to cart"),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.add_shopping_cart_outlined,
-                    size: 20,
-                    color: Colors.blueAccent,
-                  ),
-                ),
+                IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
               ],
             ),
           ),
