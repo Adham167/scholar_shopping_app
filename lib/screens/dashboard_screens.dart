@@ -11,6 +11,11 @@ class DashboardScreens extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back_ios_new),
+            color: Colors.white,
+          ),
           centerTitle: true,
           backgroundColor: Colors.blueAccent,
           title: Text("Dashboard", style: TextStyle(color: Colors.white)),
@@ -32,10 +37,12 @@ class DashboardScreens extends StatelessWidget {
                 child: CategoryListView(),
               ),
             ),
-            Center(child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ProductListView(),
-            )),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ProductListView(),
+              ),
+            ),
           ],
         ),
       ),

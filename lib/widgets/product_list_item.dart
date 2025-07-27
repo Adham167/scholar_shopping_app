@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scholar_shopping_app/models/product_model.dart';
-import 'package:scholar_shopping_app/widgets/vertical_product_list_item.dart';
 
 class ProductListItem extends StatelessWidget {
   const ProductListItem({super.key, required this.productModel});
