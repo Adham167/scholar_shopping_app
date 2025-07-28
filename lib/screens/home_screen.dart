@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/screens/product_details_screen.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 import 'package:scholar_shopping_app/services/products.dart';
@@ -33,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<CategoryCubit>(context).getCategory();
     _loadUserData();
   }
 

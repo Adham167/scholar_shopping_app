@@ -29,4 +29,16 @@ class ProductCubit extends Cubit<ProductState> {
       emit(ProductSuccess(productList: productList));
     });
   }
+  void getProductsByCategory(String categoryName) {
+  products
+      .where('category', isEqualTo: categoryName)
+      .snapshots()
+      .listen((event) {
+    productList.clear();
+    for (var doc in event.docs) {
+      productList.add(ProductModel.fromMap(doc.data() as Map<String, dynamic>));
+    }
+    emit(ProductSuccess(productList: productList));
+  });
+}
 }

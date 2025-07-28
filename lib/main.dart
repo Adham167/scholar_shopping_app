@@ -10,6 +10,7 @@ import 'package:scholar_shopping_app/screens/dashboard_screens.dart';
 import 'package:scholar_shopping_app/screens/home_screen.dart';
 import 'package:scholar_shopping_app/screens/login_screen.dart';
 import 'package:scholar_shopping_app/screens/ordered_screen.dart';
+import 'package:scholar_shopping_app/widgets/product_by_category.dart';
 import 'package:scholar_shopping_app/screens/register_screen.dart';
 import 'package:scholar_shopping_app/screens/shopping_cart.dart';
 import 'package:scholar_shopping_app/screens/splach_screen.dart';
