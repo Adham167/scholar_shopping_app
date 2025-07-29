@@ -36,7 +36,7 @@ class ProductByCategory extends StatelessWidget {
           );
         } else if (state is ProductFailure) {
           ShowMessage(context, state.errMessage);
-          return Text("${state.errMessage}");
+          return Text(state.errMessage);
         } else {
           return Center(child: CircularProgressIndicator());
         }

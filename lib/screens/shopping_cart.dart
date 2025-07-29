@@ -31,6 +31,10 @@ class _ShoppingCartState extends State<ShoppingCart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
+        ),
         centerTitle: true,
         title: Text("Shopping Cart", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blueAccent,

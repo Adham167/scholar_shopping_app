@@ -40,7 +40,7 @@ class CategoryListView extends StatelessWidget {
                       (context) => AlertDialog(
                         title: Text(
                           'Add New Category',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 24),
                         ),
                         content: TextField(
                           onChanged: (data) {

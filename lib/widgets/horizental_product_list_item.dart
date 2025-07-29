@@ -31,7 +31,7 @@ class HorizentalProductListItem extends StatelessWidget {
                 topRight: Radius.circular(16),
                 topLeft: Radius.circular(16),
               ),
-              child: Image.asset(
+              child: Image.network(
                 productModel.imageurl,
                 height: 150,
                 width: double.infinity,

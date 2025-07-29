@@ -34,7 +34,7 @@ class _CardInCartState extends State<CardInCart> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
+                child: Image.network(
                   widget.cartModel.image,
                   height: 100,
                   width: 100,

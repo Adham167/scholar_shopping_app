@@ -5,12 +5,13 @@ import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/cubits/login_cubit/login_cubit.dart';
 import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
 import 'package:scholar_shopping_app/cubits/register_cubit/regiser_cubit.dart';
+import 'package:scholar_shopping_app/cubits/wishlist_cubit/wishlist_cubit.dart';
 import 'package:scholar_shopping_app/firebase_options.dart';
 import 'package:scholar_shopping_app/screens/dashboard_screens.dart';
 import 'package:scholar_shopping_app/screens/home_screen.dart';
 import 'package:scholar_shopping_app/screens/login_screen.dart';
 import 'package:scholar_shopping_app/screens/ordered_screen.dart';
-import 'package:scholar_shopping_app/widgets/product_by_category.dart';
+import 'package:scholar_shopping_app/screens/wish_list_screen.dart';
 import 'package:scholar_shopping_app/screens/register_screen.dart';
 import 'package:scholar_shopping_app/screens/shopping_cart.dart';
 import 'package:scholar_shopping_app/screens/splach_screen.dart';
@@ -28,11 +29,11 @@ class ScholarShoppingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-            BlocProvider(create: (context) => LoginCubit()),
-            BlocProvider(create: (context) => RegiserCubit()),
-            BlocProvider(create: (context) => CategoryCubit()),
-            BlocProvider(create: (context) => ProductCubit()),
-
+        BlocProvider(create: (context) => LoginCubit()),
+        BlocProvider(create: (context) => RegiserCubit()),
+        BlocProvider(create: (context) => CategoryCubit()),
+        BlocProvider(create: (context) => ProductCubit()),
+        BlocProvider(create: (context) => WishlistCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -44,6 +45,7 @@ class ScholarShoppingApp extends StatelessWidget {
           "/shoppingcart": (context) => ShoppingCart(),
           "/orderscreen": (context) => OrderedScreen(),
           "/dashboard": (context) => DashboardScreens(),
+          "/wishlist": (context) => WishListScreen(),
         },
         initialRoute: "/",
       ),

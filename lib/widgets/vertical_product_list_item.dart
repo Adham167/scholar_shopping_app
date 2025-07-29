@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scholar_shopping_app/cubits/wishlist_cubit/wishlist_cubit.dart';
+import 'package:scholar_shopping_app/cubits/wishlist_cubit/wishlist_state.dart';
 import 'package:scholar_shopping_app/models/cart_model.dart';
 import 'package:scholar_shopping_app/models/product_model.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class VerticalProductListItem extends StatelessWidget {
   const VerticalProductListItem({super.key, required this.productModel});
@@ -9,6 +13,12 @@ class VerticalProductListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final wishlistState = context.watch<WishlistCubit>().state;
+
+    final isInWishlist = wishlistState is WishlistLoaded &&
+        wishlistState.wishlist.any((item) => item.name == productModel.name);
+
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -21,17 +31,42 @@ class VerticalProductListItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(16),
-              topLeft: Radius.circular(16),
-            ),
-            child: Image.network(
-              productModel.imageurl,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(16),
+                  topLeft: Radius.circular(16),
+                ),
+                child: Image.network(
+                  productModel.imageurl,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: IconButton(
+                  icon: Icon(
+                    isInWishlist ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.red,
+                  ),
+                  onPressed: () {
+                    if (isInWishlist) {
+                      context
+                          .read<WishlistCubit>()
+                          .removeFromWishlist(userId, productModel.name);
+                    } else {
+                      context
+                          .read<WishlistCubit>()
+                          .addToWishlist(userId, productModel);
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

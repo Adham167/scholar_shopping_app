@@ -166,6 +166,11 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 title: const Text("Orders"),
               ),
+              ListTile(
+                onTap: () => Navigator.pushNamed(context, "/wishlist"),
+                leading: const Icon(Icons.favorite, color: Colors.blueAccent),
+                title: const Text("Wish List"),
+              ),
               const Divider(),
               if (userData["isAdmin"])
                 ListTile(
@@ -196,7 +201,8 @@ class CustomDrawer extends StatelessWidget {
               const Spacer(),
               const Divider(),
               ListTile(
-                onTap: () {
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
                   Navigator.pushReplacementNamed(context, "/");
                 },
                 leading: const Icon(Icons.logout, color: Colors.red),

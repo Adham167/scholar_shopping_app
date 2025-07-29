@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
 import 'package:scholar_shopping_app/widgets/product_list_item.dart';
 import 'package:scholar_shopping_app/widgets/show_add_product_dialog.dart';
-import 'package:scholar_shopping_app/widgets/vertical_product_list_item.dart';
 
 class ProductListView extends StatelessWidget {
   const ProductListView({super.key});

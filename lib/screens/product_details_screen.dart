@@ -22,7 +22,7 @@ class ProductDetailsScreen extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.asset(productModel.imageurl),
+              child: Image.network(productModel.imageurl),
             ),
             SizedBox(height: 16),
             Column(

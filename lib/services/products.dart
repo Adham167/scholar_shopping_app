@@ -1,7 +1,7 @@
 import 'package:scholar_shopping_app/models/product_model.dart';
 import 'package:scholar_shopping_app/models/question_answer.dart';
 
-List<ProductModel> products = [
+List<ProductModel> productList = [
   ProductModel(
     name: "Leather Office Chair",
     price: 199.99,
