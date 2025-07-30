@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,19 +34,34 @@ class ScholarShoppingApp extends StatelessWidget {
         BlocProvider(create: (context) => RegiserCubit()),
         BlocProvider(create: (context) => CategoryCubit()),
         BlocProvider(create: (context) => ProductCubit()),
-        BlocProvider(create: (context) => WishlistCubit()),
+        BlocProvider(
+      create: (_) {
+        final user = FirebaseAuth.instance.currentUser;
+        return WishlistCubit()
+          ..loadWishlist(user?.uid ?? "");
+      }),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
           "/": (context) => SplachScreen(),
-          "/homescreen": (context) => HomeScreen(),
+          "/homescreen":
+              (context) => BlocProvider(
+                create:
+                    (_) =>
+                        WishlistCubit()..loadWishlist(
+                          FirebaseAuth.instance.currentUser!.uid,
+                        ),
+                child: HomeScreen(),
+              ),
           "/loginscreen": (context) => LoginScreen(),
           "/registerscreen": (context) => RegisterScreen(),
           "/shoppingcart": (context) => ShoppingCart(),
           "/orderscreen": (context) => OrderedScreen(),
           "/dashboard": (context) => DashboardScreens(),
-          "/wishlist": (context) => WishListScreen(),
+          "/wishlist":
+              (context) =>  WishListScreen(),
+              
         },
         initialRoute: "/",
       ),

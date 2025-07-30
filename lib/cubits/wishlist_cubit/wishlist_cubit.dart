@@ -51,7 +51,12 @@ class WishlistCubit extends Cubit<WishlistState> {
           .doc(productname)
           .delete();
 
-      loadWishlist(userId); // Refresh the list
+      loadWishlist(userId);
+      if (state is WishlistLoaded) {
+        final currentList = (state as WishlistLoaded).wishlist;
+        final updatedList = currentList.where((p) => p.name != productname).toList();
+        emit(WishlistLoaded(updatedList));
+      }
     } catch (e) {
       emit(WishlistError(e.toString()));
     }
@@ -60,4 +65,24 @@ class WishlistCubit extends Cubit<WishlistState> {
   bool isInWishlist(List<ProductModel> list, String productname) {
     return list.any((product) => product.name == productname);
   }
+
+  Future<void> clearWishlist(String userId) async {
+  try {
+    final wishlistRef = _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('wishlist');
+
+    final snapshot = await wishlistRef.get();
+
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+
+    loadWishlist(userId); // Refresh the list
+  } catch (e) {
+    emit(WishlistError(e.toString()));
+  }
+}
+
 }

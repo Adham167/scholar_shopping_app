@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 
 class CategoryListViewItem extends StatelessWidget {
   const CategoryListViewItem({
@@ -29,7 +31,12 @@ class CategoryListViewItem extends StatelessWidget {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(" $countofProducts Product"),
-        trailing: IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
+        trailing: IconButton(
+          onPressed: () {
+            BlocProvider.of<CategoryCubit>(context).deleteCategory(categoryName);
+          },
+          icon: Icon(Icons.delete_outline_sharp, color: Colors.red),
+        ),
       ),
     );
   }

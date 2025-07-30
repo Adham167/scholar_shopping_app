@@ -167,7 +167,8 @@ class CustomDrawer extends StatelessWidget {
                 title: const Text("Orders"),
               ),
               ListTile(
-                onTap: () => Navigator.pushNamed(context, "/wishlist"),
+                onTap: () {
+                   Navigator.pushNamed(context, "/wishlist");},
                 leading: const Icon(Icons.favorite, color: Colors.blueAccent),
                 title: const Text("Wish List"),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
+import 'package:scholar_shopping_app/services/products.dart';
 import 'package:scholar_shopping_app/widgets/category_list_view_item.dart';
 
 class CategoryListView extends StatelessWidget {
@@ -12,19 +13,36 @@ class CategoryListView extends StatelessWidget {
       children: [
         BlocBuilder<CategoryCubit, CategoryState>(
           builder: (context, state) {
-            var categors = BlocProvider.of<CategoryCubit>(context).categoryList;
-            return Expanded(
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: categors.length,
-                itemBuilder: (contex, index) {
-                  return CategoryListViewItem(
-                    categoryName: categors[index],
-                    countofProducts: 15,
-                  );
-                },
-              ),
-            );
+            if (state is CategorySuccess) {
+              return Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: state.categories.length,
+                  itemBuilder: (contex, index) {
+                    final categoryName = state.categories[index];
+
+                    return FutureBuilder<int>(
+                      future: BlocProvider.of<CategoryCubit>(
+                        context,
+                      ).getProductsCountByCategory(categoryName),
+                      builder: (context, snapshot) {
+                        final count = snapshot.data ?? 0;
+
+                        return CategoryListViewItem(
+                          categoryName: state.categories[index],
+                          countofProducts:
+                              count, // يمكنك استبدال هذا بعدد المنتجات الفعلي
+                        );
+                      },
+                    );
+                  },
+                ),
+              );
+            } else if (state is CategoryFailure) {
+              return Text(state.errMessage);
+            } else {
+              return const CircularProgressIndicator();
+            }
           },
         ),
         Padding(
@@ -38,7 +56,7 @@ class CategoryListView extends StatelessWidget {
                   context: context,
                   builder:
                       (context) => AlertDialog(
-                        title: Text(
+                        title: const Text(
                           'Add New Category',
                           style: TextStyle(fontSize: 24),
                         ),
@@ -46,7 +64,7 @@ class CategoryListView extends StatelessWidget {
                           onChanged: (data) {
                             name = data;
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'Add Category Name',
                             border: OutlineInputBorder(),
                           ),
@@ -54,23 +72,25 @@ class CategoryListView extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              BlocProvider.of<CategoryCubit>(
-                                context,
-                              ).addCategory(categoryName: name!);
-                              Navigator.pop(context);
+                              if (name != null && name!.isNotEmpty) {
+                                BlocProvider.of<CategoryCubit>(
+                                  context,
+                                ).addCategory(categoryName: name!);
+                                Navigator.pop(context);
+                              }
                             },
-                            child: Text('Add'),
+                            child: const Text('Add'),
                           ),
                         ],
                       ),
                 );
               },
               backgroundColor: Colors.blueAccent,
-              child: Icon(Icons.add, color: Colors.white),
+              child: const Icon(Icons.add, color: Colors.white),
             ),
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
+import 'package:scholar_shopping_app/cubits/wishlist_cubit/wishlist_cubit.dart';
 import 'package:scholar_shopping_app/screens/product_details_screen.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 import 'package:scholar_shopping_app/widgets/category_home_list_view.dart';
@@ -37,6 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     BlocProvider.of<CategoryCubit>(context).getCategory();
     _loadUserData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      BlocProvider.of<WishlistCubit>(context).loadWishlist(userId);
+    });
   }
 
   Future<void> _loadUserData() async {
