@@ -31,7 +31,7 @@ class CategoryListView extends StatelessWidget {
                         return CategoryListViewItem(
                           categoryName: state.categories[index],
                           countofProducts:
-                              count, // يمكنك استبدال هذا بعدد المنتجات الفعلي
+                              count,
                         );
                       },
                     );

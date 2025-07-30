@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_shopping_app/screens/order_confirmation.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 import 'package:scholar_shopping_app/widgets/card_in_cart.dart';
 import 'package:scholar_shopping_app/widgets/empty_widget.dart';
@@ -140,7 +141,8 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                                 ),
                                               ),
                                             );
-
+                                          
+                                          confirmOrder(List.from(listCarts), getTotalPrice());
                                             listCarts.clear();
                                             setState(() {
                                               updateCartItemCount();

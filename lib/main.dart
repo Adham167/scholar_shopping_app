@@ -57,7 +57,6 @@ class ScholarShoppingApp extends StatelessWidget {
           "/loginscreen": (context) => LoginScreen(),
           "/registerscreen": (context) => RegisterScreen(),
           "/shoppingcart": (context) => ShoppingCart(),
-          "/orderscreen": (context) => OrderedScreen(),
           "/dashboard": (context) => DashboardScreens(),
           "/wishlist":
               (context) =>  WishListScreen(),

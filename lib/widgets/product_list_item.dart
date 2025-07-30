@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
 import 'package:scholar_shopping_app/models/product_model.dart';
 
 class ProductListItem extends StatelessWidget {
@@ -70,7 +72,14 @@ class ProductListItem extends StatelessWidget {
             child: Row(
               children: [
                 const Spacer(),
-                IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
+                IconButton(
+                  onPressed: () {
+                    BlocProvider.of<ProductCubit>(
+                      context,
+                    ).deleteProductByName(productModel.name);
+                  },
+                  icon: Icon(Icons.delete_outline_outlined, color: Colors.red),
+                ),
               ],
             ),
           ),

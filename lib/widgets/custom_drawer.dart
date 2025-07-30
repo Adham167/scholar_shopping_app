@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
+import 'package:scholar_shopping_app/screens/orders_history.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -159,7 +160,13 @@ class CustomDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                onTap: () => Navigator.pushNamed(context, "/orderscreen"),
+                onTap:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OrdersHistory(),
+                      ),
+                    ),
                 leading: const Icon(
                   Icons.featured_play_list,
                   color: Colors.blueAccent,
@@ -168,7 +175,8 @@ class CustomDrawer extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                   Navigator.pushNamed(context, "/wishlist");},
+                  Navigator.pushNamed(context, "/wishlist");
+                },
                 leading: const Icon(Icons.favorite, color: Colors.blueAccent),
                 title: const Text("Wish List"),
               ),

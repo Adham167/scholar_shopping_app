@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scholar_shopping_app/cubits/category_cubit/category_cubit.dart';
 import 'package:scholar_shopping_app/cubits/product_cubit/product_cubit.dart';
 import 'package:scholar_shopping_app/cubits/wishlist_cubit/wishlist_cubit.dart';
+import 'package:scholar_shopping_app/models/product_model.dart';
 import 'package:scholar_shopping_app/screens/product_details_screen.dart';
 import 'package:scholar_shopping_app/services/list_carts.dart';
 import 'package:scholar_shopping_app/widgets/category_home_list_view.dart';
@@ -25,6 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String? email;
   String? imagePath;
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  List<ProductModel> _searchResults = [];
 
   Future<DocumentSnapshot> getUserData() async {
     return await FirebaseFirestore.instance
@@ -44,12 +48,34 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       fullName = prefs.getString("fulltname");
       email = prefs.getString("email");
       imagePath = prefs.getString("profileImagePath");
+    });
+  }
+
+  void _searchProducts(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _searchResults.clear();
+      });
+      return;
+    }
+
+    final cubit = BlocProvider.of<ProductCubit>(context);
+    setState(() {
+      _searchResults = cubit.productList.where((product) {
+        return product.name.toLowerCase().contains(query.toLowerCase());
+      }).toList();
     });
   }
 
@@ -69,155 +95,179 @@ class _HomeScreenState extends State<HomeScreen> {
     return total;
   }
 
+  Widget _buildSearchField() {
+    return TextField(
+      controller: _searchController,
+      autofocus: true,
+      decoration: InputDecoration(
+        hintText: 'Search products...',
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.white70),
+      ),
+      style: TextStyle(color: Colors.white),
+      onChanged: _searchProducts,
+    );
+  }
+
+  Widget _buildProductGrid(List<ProductModel> products) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ProductDetailsScreen(
+                        productModel: products[index],
+                      );
+                    },
+                  ),
+                );
+              },
+              child: VerticalProductListItem(
+                productModel: products[index],
+              ),
+            );
+          },
+          childCount: products.length,
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: 0.6,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturedProducts(List<ProductModel> products) {
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 260,
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ProductDetailsScreen(
+                        productModel: products[index],
+                      );
+                    },
+                  ),
+                );
+              },
+              child: HorizentalProductListItem(
+                productModel: products[index],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ProductCubit>(context).getProduct();
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
+        final products = _isSearching ? _searchResults : 
+                        BlocProvider.of<ProductCubit>(context).productList;
+
         return Scaffold(
           drawer: CustomDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
             leading: Builder(
-              builder:
-                  (context) => IconButton(
-                    icon: const Icon(Icons.menu, color: Colors.white),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                  ),
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu, color: Colors.white),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
             ),
-            title: Row(
-              children: [
-                Text(
-                  "Products",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            title: _isSearching 
+                ? _buildSearchField()
+                : Row(
+                    children: [
+                      Text(
+                        "Products",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isSearching = true;
+                          });
+                        },
+                        icon: Icon(Icons.search, color: Colors.white),
+                      ),
+                    ],
                   ),
-                ),
-                Spacer(),
+            actions: [
+              if (_isSearching)
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.search, color: Colors.white),
+                  icon: Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.clear();
+                      _searchResults.clear();
+                    });
+                  },
                 ),
-              ],
-            ),
+            ],
           ),
-
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(
-                  child: Text(
-                    "Shop by Category",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: 100, child: CategoryHomeListView()),
-                ),
-                SliverToBoxAdapter(
-                  child: Text(
-                    "Featured Products",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 260,
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount:
-                          BlocProvider.of<ProductCubit>(
-                            context,
-                          ).productList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ProductDetailsScreen(
-                                    productModel:
-                                        BlocProvider.of<ProductCubit>(
-                                          context,
-                                        ).productList[index],
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: HorizentalProductListItem(
-                            productModel:
-                                BlocProvider.of<ProductCubit>(
-                                  context,
-                                ).productList[index],
-                          ),
-                        );
-                      },
+                if (!_isSearching) ...[
+                  SliverToBoxAdapter(
+                    child: Text(
+                      "Shop by Category",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 100, child: CategoryHomeListView()),
+                  ),
+                  SliverToBoxAdapter(
                     child: Text(
-                      "New Arrivals",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                      "Featured Products",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                  _buildFeaturedProducts(products),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "New Arrivals",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ProductDetailsScreen(
-                                    productModel:
-                                        BlocProvider.of<ProductCubit>(
-                                          context,
-                                        ).productList[index],
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: VerticalProductListItem(
-                            productModel:
-                                BlocProvider.of<ProductCubit>(
-                                  context,
-                                ).productList[index],
-                          ),
-                        );
-                      },
-                      childCount:
-                          BlocProvider.of<ProductCubit>(
-                            context,
-                          ).productList.length,
-                    ),
-
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childAspectRatio: 0.6,
-                        ),
-                  ),
-                ),
+                ],
+                _buildProductGrid(products),
               ],
             ),
           ),
